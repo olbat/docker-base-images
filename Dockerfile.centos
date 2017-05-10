@@ -1,0 +1,10 @@
+FROM scratch
+MAINTAINER devel@olbat.net
+
+ADD build/rootfs.tar.gz /
+
+RUN localedef -i en_US -f UTF-8 en_US.UTF-8
+
+ENV LANG en_US.utf8 \
+LANGUAGE en_US.utf8 \
+LC_ALL en_US.utf8
