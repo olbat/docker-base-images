@@ -1,14 +1,17 @@
 ---
 language: bash
-
+os: linux
+dist: trusty
 sudo: required
-
 services:
 - docker
 
 install:
+# add the xenial repository to install a recent version of the tools
+- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe"
+  | sudo tee /etc/apt/sources.list.d/ubuntu-xenial.list
 - travis_retry sudo apt-get -qq update
-- travis_retry sudo apt-get install -y debootstrap
+- travis_retry sudo apt-get install -t xenial -y busybox-static debootstrap rinse
 
 before_script:
 - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
@@ -16,15 +19,22 @@ before_script:
 - travis_retry git submodule update
 
 script:
-- travis_retry sudo ./build.sh $REPOSITORY $RELEASE $TAGS
+- travis_retry sudo ./build.sh $DISTRIB $RELEASE $REPOSITORY $TAGS
 
 env:
   global:
-  - REPOSITORY=olbat/debian
   - secure: "Gy/4eqsVzPPh3HfWi70UEPDIDHxSrgpuj9ZPnhaq1jZCdgYI9Qe4QmAfmy3Seai6Dm1Jqs0fSQP/6a1aWGYN+otkOWKDg+2nGusp9Im3YlqrGqveTiK0C2O6OiGYt4VAcldJRjYKkIIAqM7Eksi9zTM04IpLd/bLoOSRQosqewYXfB8r43j3MyBayFlHDdDToeUtTOItFzkXscu179MJugaPl8WFGxzB43tIGOgxr04Xk0qeUD4kx/XBk83zIwZTEW+134Uf1FnGABuTpzVGkr147JhPc9JzGhZSpgZstfBRx/DVooQI2u3X96rAhLiGXtkVmOC/VwQWmfBjYdMYmeg6RhWyuvsMXivt1Q88RLF642Qc4N2hyfo1mZsDnxw3OxBEkSzZE+/klafJSGVBG/DOTx0XJ9oAkZ77wbO/PgjFvssDn7jwIVmCOVPxj5Gj3J+d+JoEJhxXsZNUMctP5FmTzsqXDg22xOBn+TNd6d7h72USFDbhik7oJkq8D0GyRu2kPse4n+BCRIyefIMKRt2iyYI8VDoz32AGpqOcjEKMGyiVpILomdPMnbRsgHSG1reEkhuvxILCwWjA575seVFBPiqMTmc3xNO089JH0662VZFNkUnz/bKV8vCh3CpVCT7OZs1BZhvyV8B8XPvW/pL+Dz/UydlHC7qjO6QJgJs="
   - secure: "TXcmmMfIr6g04mhwHkMHlEFCUhN67YlRrvX30ly5jqZKCeMsetzjR/bZFCkk/hDO7epgp/3YDUK/2FMwrkjg+c32kA6U3GvDpJ+5UJx70Dn7QbMJiVo0q1AIICrPh2Unoy+bh5/KU7skWbjrjEGenrx6O7ByvLpXhKwe7OjlQNFGImIXpbcdyMq0eVADJIcJXEKi1Fja26ZoDSHGVezdOu+svHwKrSVNHYyyKUzx1UKAQ132Vzjq2xjX8H4UFuJwxUBclurUNVjc6qX/YNlqGnbIHriMTtKM4+EdsYWVb64MMHX5S+D09kfeT+hrfTqY/Mm2ZrrEzYuNOHZNL44+6y1uCcyuA6qrLOf0zeGMOXOWzWqcJ7lbuqwW3xcLhzwGmrNzDm2QElkRQ+tZnKVuXL4b+3Ffd+fzB8XUYgFJmj6S+3jf1c5Iv/zKbRjoxDCX+XebCtXH6MUGPryMuuqB6/jKscRS8faJjT7bCGDBync/1Qq5DM8bnEkfb+ZBmZkqGlAI9N4VkRkThu45BIFoBQK0xis72oQqcLHSKBHlzOYCT0RP76Jf8yW2vln/RJ4rRJU+w9ddk4CQWqTda5Kf9Z6aooO4YroudfcOmOo8At/5mxQi5WcFc088nOiaaR7vxVe9t7ONZZWq/WMqbcNAUuGWncnMhGwSpkYkmZ5wjBE="
   - secure: "RsDPapsZFTh6Dn/hEucZ8gFSM4B4dDblcB1nebhl4vybg5lRlyDwhuwd7s+uhA84tzU+Z7QKGoJqwT73GcscLNfOhBBvechuu9SX+rQxS0A4I9MNRO9AtsD8BR/XeRegaUAIjMCXr7Iny0F4yK5aCkLXD4cFA/vC51xwrUOlPwl9CHNV2yb1Dq496xXKhgj9lWULIxrC1Gh3I6YTP6FIwrKgphNVUcO3g6AQau6215KurRXIvfHz1fSdG+a3mGNT3WXPCdKRSI6CptLn5SbZC5nba72dJMH8iHpqrMklzcdcsgMO4jtAa4LRwt1zKlO2W6opQuE7vZ4x19iyHGaxbPkPdWpHvuda6ZktP/Z3ANxhuhL2daT78cVzZtwXW4BbLteSqHDc4745TqizajVOqS/ZbPTl2NVkhYWEy9nHTQhK2Edhn1bmLmpNMU4S0FZvJiQrHgKkOK8cx2Z1WV4C+pbRhlRp5h+3zcTAtQ6/6x8HsfeBcDmx/3LryXXcw1Q6pH9L3tWCS7AlISxkDU1xrTSDzi0saXx/VFvOSin7g4FGsFiMGRIKk/61urXDwGFUxdctnJY/kYr+GwM6ufmzHIHD7rgozCv4jjm7zLBEWIrDrq2EuZfCfRVLqGggMUnOk2oCru5zXSOOLo+IyskyhFguCzV5ph+kSUXaC4yBmL8="
   matrix:
-  - RELEASE=stable TAGS=jessie,8.x,8,latest
-  - RELEASE=testing TAGS=stretch,9.x,9
-  - RELEASE=unstable TAGS=sid
+  - DISTRIB=busybox RELEASE=- REPOSITORY=olbat/busybox TAGS=latest
+  - DISTRIB=alpine RELEASE=edge REPOSITORY=olbat/alpine TAGS=edge,latest
+  - DISTRIB=debian RELEASE=stable REPOSITORY=olbat/debian TAGS=stable,jessie,8.x,8,latest
+  - DISTRIB=debian RELEASE=testing REPOSITORY=olbat/debian TAGS=testing,stretch,9.x,9
+  - DISTRIB=debian RELEASE=unstable REPOSITORY=olbat/debian TAGS=unstable,sid
+  - DISTRIB=ubuntu RELEASE=precise REPOSITORY=olbat/ubuntu TAGS=precise,12.04
+  - DISTRIB=ubuntu RELEASE=trusty REPOSITORY=olbat/ubuntu TAGS=trusty,14.04
+  - DISTRIB=ubuntu RELEASE=xenial REPOSITORY=olbat/ubuntu TAGS=xenial,16.04,latest
+  - DISTRIB=centos RELEASE=centos-7 REPOSITORY=olbat/centos TAGS=7.x,7,latest
+  # FIXME: does not build due to some yum/dns & rinse issue
+  #- DISTRIB=fedora RELEASE=fedora-22 REPOSITORY=olbat/fedora TAGS=22,latest

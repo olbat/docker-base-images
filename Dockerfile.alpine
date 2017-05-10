@@ -1,0 +1,4 @@
+FROM scratch
+MAINTAINER devel@olbat.net
+
+ADD build/rootfs.tar.xz /
