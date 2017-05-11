@@ -30,7 +30,14 @@ Build and push the `user/debian` image based on the `stable` Debian release with
 
 ```bash
 # as root
-./build.sh debian user/debian stable jessie,8.x
+./build.sh debian stable user/debian jessie,8.x
+```
+
+Build and push the `centos` image based on the CentOS 7 release:
+
+```bash
+# as root
+./build.sh centos centos-7
 ```
 
 __Note__: if the image has to be pushed pushed to a login-enabled registry, you should first login using `docker login`
@@ -43,4 +50,5 @@ __Note__: if the image has to be pushed pushed to a login-enabled registry, you 
 - [Ubuntu](https://hub.docker.com/r/olbat/ubuntu)
 - [CentOS](https://hub.docker.com/r/olbat/centos)
 - [Fedora](https://hub.docker.com/r/olbat/fedora)
+
 __Note__: this images are generated on a daily basis using [Travis CI](https://travis-ci.org/olbat/docker-base-images)
