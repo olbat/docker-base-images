@@ -30,8 +30,9 @@ env:
   - DISTRIB=busybox RELEASE=- REPOSITORY=olbat/busybox TAGS=latest
   - DISTRIB=alpine RELEASE=edge REPOSITORY=olbat/alpine TAGS=edge,latest
   - DISTRIB=debian RELEASE=stable REPOSITORY=olbat/debian TAGS=stable,stretch,9.x,9,latest
-  - DISTRIB=debian RELEASE=testing REPOSITORY=olbat/debian TAGS=testing,buster,10.x,10
-  # FIXME: temporary disabled (see https://travis-ci.org/olbat/docker-base-images/jobs/293213182)
+  # FIXME: temporary disabled because of a bug in debootstrap
+  # (see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=879755)
+  #- DISTRIB=debian RELEASE=testing REPOSITORY=olbat/debian TAGS=testing,buster,10.x,10
   #- DISTRIB=debian RELEASE=unstable REPOSITORY=olbat/debian TAGS=unstable,sid
   - DISTRIB=ubuntu RELEASE=precise REPOSITORY=olbat/ubuntu TAGS=precise,12.04
   - DISTRIB=ubuntu RELEASE=trusty REPOSITORY=olbat/ubuntu TAGS=trusty,14.04
