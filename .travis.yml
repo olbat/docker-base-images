@@ -6,21 +6,6 @@ sudo: required
 services:
 - docker
 
-install:
-# add the xenial repository to install a recent version of the tools
-- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe"
-  | sudo tee /etc/apt/sources.list.d/ubuntu-xenial.list
-- travis_retry sudo apt-get -qq update
-- travis_retry sudo apt-get install -t xenial -y busybox-static debootstrap rinse
-
-before_script:
-- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
-- git submodule init
-- travis_retry git submodule update
-
-script:
-- travis_retry sudo ./build.sh $DISTRIB $RELEASE $REPOSITORY $TAGS
-
 env:
   global:
   - secure: "Gy/4eqsVzPPh3HfWi70UEPDIDHxSrgpuj9ZPnhaq1jZCdgYI9Qe4QmAfmy3Seai6Dm1Jqs0fSQP/6a1aWGYN+otkOWKDg+2nGusp9Im3YlqrGqveTiK0C2O6OiGYt4VAcldJRjYKkIIAqM7Eksi9zTM04IpLd/bLoOSRQosqewYXfB8r43j3MyBayFlHDdDToeUtTOItFzkXscu179MJugaPl8WFGxzB43tIGOgxr04Xk0qeUD4kx/XBk83zIwZTEW+134Uf1FnGABuTpzVGkr147JhPc9JzGhZSpgZstfBRx/DVooQI2u3X96rAhLiGXtkVmOC/VwQWmfBjYdMYmeg6RhWyuvsMXivt1Q88RLF642Qc4N2hyfo1mZsDnxw3OxBEkSzZE+/klafJSGVBG/DOTx0XJ9oAkZ77wbO/PgjFvssDn7jwIVmCOVPxj5Gj3J+d+JoEJhxXsZNUMctP5FmTzsqXDg22xOBn+TNd6d7h72USFDbhik7oJkq8D0GyRu2kPse4n+BCRIyefIMKRt2iyYI8VDoz32AGpqOcjEKMGyiVpILomdPMnbRsgHSG1reEkhuvxILCwWjA575seVFBPiqMTmc3xNO089JH0662VZFNkUnz/bKV8vCh3CpVCT7OZs1BZhvyV8B8XPvW/pL+Dz/UydlHC7qjO6QJgJs="
@@ -30,13 +15,32 @@ env:
   - DISTRIB=busybox RELEASE=- REPOSITORY=olbat/busybox TAGS=latest
   - DISTRIB=alpine RELEASE=edge REPOSITORY=olbat/alpine TAGS=edge,latest
   - DISTRIB=debian RELEASE=stable REPOSITORY=olbat/debian TAGS=stable,stretch,9.x,9,latest
-  # FIXME: temporary disabled because of a bug in debootstrap
-  # (see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=879755)
-  #- DISTRIB=debian RELEASE=testing REPOSITORY=olbat/debian TAGS=testing,buster,10.x,10
-  #- DISTRIB=debian RELEASE=unstable REPOSITORY=olbat/debian TAGS=unstable,sid
+  - DISTRIB=debian RELEASE=testing REPOSITORY=olbat/debian TAGS=testing,buster,10.x,10
+  - DISTRIB=debian RELEASE=unstable REPOSITORY=olbat/debian TAGS=unstable,sid
   - DISTRIB=ubuntu RELEASE=precise REPOSITORY=olbat/ubuntu TAGS=precise,12.04
   - DISTRIB=ubuntu RELEASE=trusty REPOSITORY=olbat/ubuntu TAGS=trusty,14.04
   - DISTRIB=ubuntu RELEASE=xenial REPOSITORY=olbat/ubuntu TAGS=xenial,16.04,latest
   - DISTRIB=centos RELEASE=centos-7 REPOSITORY=olbat/centos TAGS=7.x,7,latest
   # FIXME: does not build due to some yum/dns & rinse issue
   #- DISTRIB=fedora RELEASE=fedora-22 REPOSITORY=olbat/fedora TAGS=22,latest
+
+install:
+# add the xenial repository to install a recent version of the tools
+- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe"
+  | sudo tee /etc/apt/sources.list.d/ubuntu-xenial.list
+- travis_retry sudo apt-get -qq update
+- travis_retry sudo apt-get install -t xenial -y busybox-static debootstrap rinse
+# FIXME: temporary hack for debootstrap of Debian testing and unstable
+# (see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=879755)
+- test $DISTRIB != 'debian'
+  || sudo sed -i /usr/share/debootstrap/scripts/testing
+    -i /usr/share/debootstrap/scripts/unstable
+    -e '/^[[:space:]]\+base=/ s/apt-transport-https //'
+
+before_script:
+- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
+- git submodule init
+- travis_retry git submodule update
+
+script:
+- travis_retry sudo ./build.sh $DISTRIB $RELEASE $REPOSITORY $TAGS
