@@ -38,7 +38,7 @@ install:
     -e '/^[[:space:]]\+base=/ s/apt-transport-https //'
 
 before_script:
-- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
+- docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 - git submodule init
 - travis_retry git submodule update
 
