@@ -20,8 +20,8 @@ env:
   - DISTRIB=ubuntu RELEASE=precise REPOSITORY=olbat/ubuntu TAGS=precise,12.04
   - DISTRIB=ubuntu RELEASE=trusty REPOSITORY=olbat/ubuntu TAGS=trusty,14.04
   - DISTRIB=ubuntu RELEASE=xenial REPOSITORY=olbat/ubuntu TAGS=xenial,16.04,latest
-  - DISTRIB=centos RELEASE=centos-7 REPOSITORY=olbat/centos TAGS=7.x,7,latest
   # FIXME: does not build due to some yum/dns & rinse issue
+  #- DISTRIB=centos RELEASE=centos-7 REPOSITORY=olbat/centos TAGS=7.x,7,latest
   #- DISTRIB=fedora RELEASE=fedora-22 REPOSITORY=olbat/fedora TAGS=22,latest
 
 install:
