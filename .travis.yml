@@ -29,6 +29,8 @@ install:
 # add the xenial repository to install a recent version of the tools
 - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe"
   | sudo tee /etc/apt/sources.list.d/ubuntu-xenial.list
+- echo "deb http://archive.ubuntu.com/ubuntu xenial-updates main universe"
+  | sudo tee -a /etc/apt/sources.list.d/ubuntu-xenial.list
 - travis_retry sudo apt-get -qq update
 - travis_retry sudo apt-get install -t xenial -y busybox-static debootstrap rinse
 # FIXME: temporary hack for debootstrap of Debian testing and unstable
