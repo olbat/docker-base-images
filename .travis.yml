@@ -1,7 +1,7 @@
 ---
 language: bash
 os: linux
-dist: trusty
+dist: xenial
 sudo: required
 services:
 - docker
