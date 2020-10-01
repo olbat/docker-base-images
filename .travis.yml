@@ -20,16 +20,14 @@ env:
   - DISTRIB=ubuntu RELEASE=precise REPOSITORY=olbat/ubuntu TAGS=precise,12.04
   - DISTRIB=ubuntu RELEASE=trusty REPOSITORY=olbat/ubuntu TAGS=trusty,14.04
   - DISTRIB=ubuntu RELEASE=xenial REPOSITORY=olbat/ubuntu TAGS=xenial,16.04
+  - DISTRIB=ubuntu RELEASE=bionic REPOSITORY=olbat/ubuntu TAGS=bionic,18.04
+  - DISTRIB=ubuntu RELEASE=bionic REPOSITORY=olbat/ubuntu TAGS=focal,20.04,latest
   # Disabled because of rinse failures
   #- DISTRIB=centos RELEASE=centos-8 REPOSITORY=olbat/centos TAGS=8.x,8,latest
   #- DISTRIB=fedora RELEASE=fedora-28 REPOSITORY=olbat/fedora TAGS=28,latest
   #- DISTRIB=fedora-core RELEASE=fedora-core-6 REPOSITORY=olbat/fedora-core TAGS=6,latest
   #- DISTRIB=slc RELEASE=slc-6 REPOSITORY=olbat/slc TAGS=6,latest
   #- DISTRIB=opensuze RELEASE=opensuse-42.2 REPOSITORY=olbat/opensuze TAGS=42.2,latest
-  - DISTRIB=ubuntu RELEASE=bionic REPOSITORY=olbat/ubuntu TAGS=bionic,18.04,latest
-  # FIXME: does not build due to some yum/dns & rinse issue
-  #- DISTRIB=centos RELEASE=centos-7 REPOSITORY=olbat/centos TAGS=7.x,7,latest
-  #- DISTRIB=fedora RELEASE=fedora-22 REPOSITORY=olbat/fedora TAGS=22,latest
 
 install:
 - travis_retry sudo apt-get -qq update
