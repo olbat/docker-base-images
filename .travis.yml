@@ -1,7 +1,7 @@
 ---
 language: bash
 os: linux
-dist: xenial
+dist: focal
 sudo: required
 services:
 - docker
@@ -16,30 +16,32 @@ env:
   - DISTRIB=alpine RELEASE=edge REPOSITORY=olbat/alpine TAGS=edge,latest
   - DISTRIB=debian RELEASE=stable REPOSITORY=olbat/debian TAGS=stable,buster,10.x,10
   - DISTRIB=debian RELEASE=testing REPOSITORY=olbat/debian TAGS=testing,bullseye,11.x,11
-  # FIXME: temporary disabled, to be investigated
-  #- DISTRIB=debian RELEASE=unstable REPOSITORY=olbat/debian TAGS=unstable,sid
+  - DISTRIB=debian RELEASE=unstable REPOSITORY=olbat/debian TAGS=unstable,sid
   - DISTRIB=ubuntu RELEASE=precise REPOSITORY=olbat/ubuntu TAGS=precise,12.04
   - DISTRIB=ubuntu RELEASE=trusty REPOSITORY=olbat/ubuntu TAGS=trusty,14.04
   - DISTRIB=ubuntu RELEASE=xenial REPOSITORY=olbat/ubuntu TAGS=xenial,16.04
-  - DISTRIB=ubuntu RELEASE=bionic REPOSITORY=olbat/ubuntu TAGS=bionic,18.04,latest
-  # FIXME: does not build due to some yum/dns & rinse issue
-  #- DISTRIB=centos RELEASE=centos-7 REPOSITORY=olbat/centos TAGS=7.x,7,latest
-  #- DISTRIB=fedora RELEASE=fedora-22 REPOSITORY=olbat/fedora TAGS=22,latest
+  - DISTRIB=ubuntu RELEASE=bionic REPOSITORY=olbat/ubuntu TAGS=bionic,18.04
+  - DISTRIB=ubuntu RELEASE=bionic REPOSITORY=olbat/ubuntu TAGS=focal,20.04,latest
+  - DISTRIB=centos RELEASE=centos-8 REPOSITORY=olbat/centos TAGS=8.x,8,latest
+  - DISTRIB=fedora RELEASE=fedora-28 REPOSITORY=olbat/fedora TAGS=28,latest
+  - DISTRIB=fedora-core RELEASE=fedora-core-6 REPOSITORY=olbat/fedora-core TAGS=6,latest
+  - DISTRIB=slc RELEASE=slc-6 REPOSITORY=olbat/slc TAGS=6,latest
+  - DISTRIB=opensuze RELEASE=opensuse-42.2 REPOSITORY=olbat/opensuze TAGS=42.2,latest
 
 install:
 # add the xenial repository to install a recent version of the tools
-- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe"
-  | sudo tee /etc/apt/sources.list.d/ubuntu-xenial.list
-- echo "deb http://archive.ubuntu.com/ubuntu xenial-updates main universe"
-  | sudo tee -a /etc/apt/sources.list.d/ubuntu-xenial.list
+#- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe"
+#  | sudo tee /etc/apt/sources.list.d/ubuntu-xenial.list
+#- echo "deb http://archive.ubuntu.com/ubuntu xenial-updates main universe"
+#  | sudo tee -a /etc/apt/sources.list.d/ubuntu-xenial.list
 - travis_retry sudo apt-get -qq update
-- travis_retry sudo apt-get install -t xenial -y busybox-static debootstrap rinse
+- travis_retry sudo apt-get install -y busybox-static debootstrap rinse
 # FIXME: temporary hack for debootstrap of Debian testing and unstable
 # (see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=879755)
-- test $DISTRIB != 'debian'
-  || sudo sed -i /usr/share/debootstrap/scripts/testing
-    -i /usr/share/debootstrap/scripts/unstable
-    -e '/^[[:space:]]\+base=/ s/apt-transport-https //'
+#- test $DISTRIB != 'debian'
+#  || sudo sed -i /usr/share/debootstrap/scripts/testing
+#    -i /usr/share/debootstrap/scripts/unstable
+#    -e '/^[[:space:]]\+base=/ s/apt-transport-https //'
 
 before_script:
 - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
