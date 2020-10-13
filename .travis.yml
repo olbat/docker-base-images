@@ -17,7 +17,6 @@ env:
   - DISTRIB=debian RELEASE=stable REPOSITORY=olbat/debian TAGS=stable,buster,10.x,10
   - DISTRIB=debian RELEASE=testing REPOSITORY=olbat/debian TAGS=testing,bullseye,11.x,11
   - DISTRIB=debian RELEASE=unstable REPOSITORY=olbat/debian TAGS=unstable,sid
-  - DISTRIB=ubuntu RELEASE=precise REPOSITORY=olbat/ubuntu TAGS=precise,12.04
   - DISTRIB=ubuntu RELEASE=trusty REPOSITORY=olbat/ubuntu TAGS=trusty,14.04
   - DISTRIB=ubuntu RELEASE=xenial REPOSITORY=olbat/ubuntu TAGS=xenial,16.04
   - DISTRIB=ubuntu RELEASE=bionic REPOSITORY=olbat/ubuntu TAGS=bionic,18.04
