@@ -38,7 +38,7 @@ debian|ubuntu)
 
 	script=mkimage.sh
 	args="$MKIMAGE_OPTS debootstrap"
-	args+=" --variant=minbase --include=locales,${INCLUDE:-netcat}"
+	args+=" --variant=minbase --include=locales,${INCLUDE:-netcat-openbsd}"
 	args+=" --components=$components $2"
 	;;
 
