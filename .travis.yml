@@ -14,8 +14,8 @@ env:
   matrix:
   - DISTRIB=busybox RELEASE=- REPOSITORY=olbat/busybox TAGS=latest
   - DISTRIB=alpine RELEASE=edge REPOSITORY=olbat/alpine TAGS=edge,latest
-  - DISTRIB=debian RELEASE=stable REPOSITORY=olbat/debian TAGS=stable,buster,10.x,10
-  - DISTRIB=debian RELEASE=testing REPOSITORY=olbat/debian TAGS=testing,bullseye,11.x,11
+  - DISTRIB=debian RELEASE=stable REPOSITORY=olbat/debian TAGS=stable,bullseye,11.x,11
+  - DISTRIB=debian RELEASE=testing REPOSITORY=olbat/debian TAGS=testing,bookworm,12.x,12
   - DISTRIB=debian RELEASE=unstable REPOSITORY=olbat/debian TAGS=unstable,sid
   - DISTRIB=ubuntu RELEASE=bionic REPOSITORY=olbat/ubuntu TAGS=focal,20.04,latest
   # Disabled to reduce Travis CI resources consumption
